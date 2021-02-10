@@ -1,0 +1,294 @@
+table.dataTable.dtr-column>tbody>tr>td.control:before, table.dataTable.dtr-column>tbody>tr>th.control::before
+	{
+  display: none;
+  font-family: "Font Awesome 5 Solid";
+  content: "\f055"  
+}
+
+table.dataTable.dtr-column>tbody>tr.parent td.control::before, table.dataTable.dtr-column>tbody>tr.parent th.control::before
+	{
+  display: none;
+  font-family: "Font Awesome 5 Solid";
+  content: "\f056"
+}
+
+/* get rid of the :before elements */
+table.dataTable thead .sorting::before, table.dataTable thead .sorting_asc::before,
+	table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled::before,
+table.dataTable thead .sorting_desc_disabled::before {
+  display: none;
+}
+
+/* sort both */
+table.dataTable thead .sorting::after {
+  display: none;
+  font-family: "Font Awesome 5 Solid";
+  content: "\f0dc"
+ }
+
+/* sort asc */
+table.dataTable thead .sorting_asc::after {
+  display: none;
+  font-family: "Font Awesome 5 Solid";
+  content: "\f0de"
+}
+
+/* sort desc */
+table.dataTable thead .sorting_desc::after {
+  display: none;
+  font-family: "Font Awesome 5 Solid";
+  content: "\f0dd"
+}
+
+/* Keeps the FA icons aligned correctly in the TH */
+th .svg-inline--fa {
+   float: right;
+  margin-right: -1.2em;
+  margin-top: .25em;
+}
+
+#myBtn {
+	background-color: #0f227e;
+}
+
+#topsection {
+	background: #FFFFFF;
+	background-repeat: no-repeat;
+	height: 120px; /*Height of top section*/
+}
+
+#wrapper {
+	width: 100%;
+	background: #2A3F54;
+	overflow: auto;
+}
+
+li a.active {
+	background-color: none;
+}
+
+p {
+	font-size: 1.1em;
+	font-weight: 300;
+	line-height: 1.7em;
+	/*color: #999;*/
+}
+
+a, a:hover, a:focus {
+	color: inherit;
+	text-decoration: none;
+	transition: all 0.3s;
+}
+
+.navbar {
+	border: medium none;
+	border-radius: 0;
+	margin-bottom: 10px;
+}
+/*.navbar {
+	padding: 10px 10px;
+	background: #fff;
+	border: none;
+	border-radius: 0;
+	margin-bottom: 10px;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}*/
+.navbar-btn {
+	box-shadow: none;
+	outline: none !important;
+	border: none;
+}
+
+.line {
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px dashed #ddd;
+	margin: 40px 0;
+}
+
+#sidebar, #sidebar .sidebar-header {
+	background: #222D32;
+}
+
+#sidebar #info {
+	background: #2C3B41;
+	padding: 3px 0;
+}
+
+#sidebar #ente {
+	padding-left: 3px;
+	padding-right: 9px;
+	background: rgb(0, 166, 90);
+	padding: 6px;
+	color: #fff;
+}
+
+
+li.active>ul {
+	background: #2C3B41;
+	border-radius: 3px;
+	margin: 3px;
+}
+
+.help-block {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.simplebar-scrollbar {
+	width: 3px !important;
+}
+
+.note-btn-group.btn-group {
+	margin: 0;
+}
+
+.profile-user-info {
+	display: table;
+	width: 98%;
+	width: calc(100% - 24px);
+	margin: 0 auto
+}
+
+.profile-info-row {
+	display: table-row
+}
+
+.profile-info-name, .profile-info-value {
+	display: table-cell;
+	border-top: 1px dotted #D5E4F1
+}
+
+.profile-info-name {
+	text-align: right;
+	padding: 6px 10px 6px 4px;
+	font-weight: 400;
+	color: #667E99;
+	background-color: transparent;
+	width: 110px;
+	vertical-align: middle
+}
+
+.profile-info-value {
+	padding: 6px 4px 6px 6px
+}
+
+.profile-info-value>span+span:before {
+	display: inline;
+	content: ",";
+	margin-left: 1px;
+	margin-right: 3px;
+	color: #666;
+	border-bottom: 1px solid #FFF
+}
+
+.profile-info-value>span+span.editable-container:before {
+	display: none
+}
+
+.profile-info-row:first-child .profile-info-name, .profile-info-row:first-child .profile-info-value
+	{
+	border-top: none
+}
+
+.profile-user-info-striped {
+	border: 1px solid #DCEBF7
+}
+
+.profile-user-info-striped .profile-info-name {
+	color: #336199;
+	background-color: #EDF3F4;
+	border-top: 1px solid #F7FBFF
+}
+
+.profile-user-info-striped .profile-info-value {
+	border-top: 1px dotted #DCEBF7;
+	padding-left: 12px
+}
+
+.profile-picture {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	padding: 4px;
+	display: inline-block;
+	max-width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, .15)
+}
+
+.profile-contact-links {
+	padding: 4px 2px 5px;
+	border: 1px solid #E0E2E5;
+	background-color: #F8FAFC
+}
+
+
+/**
+* Roster Ciheam rules
+*/
+h3 {
+	color: #0f227e;
+}
+
+.avatar-circle {
+	background-color: #0f227e;
+}
+
+.btn-primary {
+	background-color: #0f227e;
+}
+
+.panel-ciheam {
+	border-color: #0f227e;
+}
+
+.panel-fixed-height {
+	min-height: 410px;
+}
+
+.panel-ciheam>.panel-heading {
+	border-color: #0f227e;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+}
+
+@media only screen and (max-width:480px) {
+	.profile-info-name {
+		width: 80px
+	}
+	.profile-user-info-striped .profile-info-name {
+		float: none;
+		width: auto;
+		text-align: left;
+		padding: 6px 4px 6px 10px;
+		display: block
+	}
+	.profile-user-info-striped .profile-info-value {
+		margin-left: 10px;
+		display: block
+	}
+	.user-profile .memberdiv {
+		width: 50%;
+		margin-left: 0;
+		margin-right: 0
+	}
+}
+
+.blue {
+	color: #478FCA !important
+}
+
+.light-blue {
+	color: #93CBF9 !important
+}
+
+.light-orange {
+	color: #FCAC6F !important
+}
+
+.purple {
+	color: #A069C3 !important
+}

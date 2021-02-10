@@ -1,0 +1,14 @@
+#errorboxcontent h4 {
+	font-size: 15px;
+	margin-bottom: 8px;
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 8px;
+	text-align: center;
+	width: 100%;
+}
+
+#errorbox {
+	z-index: 10;
+	/*display:none;*/
+}

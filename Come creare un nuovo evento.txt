@@ -1,0 +1,15 @@
+Creazione di un nuovo Form
+
+1- creare una cartella in pages/event/{folder} con il nome della tipologia di evento che si vuole creare, es. advanced. Copiare una già presente e rinominarla.
+
+2- Modificare il file pre.php e page.js a seconda delle esigenze.
+
+3- creare un file signup_{folder}.tpl in core/tempaltes/tpl in cui inserire il form vero e proprio. Copiare una già presente e rinominarlo.
+
+4- in evento.class.php aggiungere un "case {folder}" nella funzione registraUtente()
+
+5- modificare la tabella utenti aggiungendo il nuovo modello nella colonna template ed evenutali campi nuovi (user_campo1, user_campo2 ...)
+
+6- modificare pages/admin/eventi/templates/add.tpl inserendo un nuovo radiobutton nei Modelli
+
+7- creare un evento di prova e catturare la schermata per creare un png da inserire nella cartella public (es. {folder}.png)

@@ -1,0 +1,79 @@
+.helpdiv {
+	background-color: white;
+	border: 1px solid #888888;
+	display: none;
+	height: 400px;
+	left: 10px;
+	position: fixed;
+	top: 10px;
+	width: 500px;
+	z-index: 1100;
+}
+
+.helpdiv.expanded {
+	bottom: 10px;
+	height: auto;
+	right: 10px;
+	width: auto;
+}
+
+.helpdiv P {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px !important;
+	text-align: justify;
+	text-indent: 1em;
+}
+
+.helpdiv U {
+	text-decoration: underline;
+}
+
+.helpdiv h3 {
+	color: #880000 !important;
+	font-size: 16px;
+	font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica,
+		sans-serif;
+	border-bottom: 0px;
+	text-align: left;
+	margin-left: 20px;
+	margin-right: 30px;
+	text-indent: 0;
+	width: 85%;
+}
+
+.helpdiv h4 {
+	color: #880000;
+	font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica,
+		sans-serif;
+	font-size: 15px;
+	padding: 10px;
+	text-indent: 1em;
+}
+
+.helpdiv .bar {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.helpdiv .head {
+	border-bottom: 1px solid #CCCCCC;
+	background-color: #FFFFFF;
+}
+
+.helpdiv .content {
+	height: 343px;
+	overflow: auto;
+	padding: 8px;
+	width: auto;
+}
+
+.helpdiv P.esempio {
+	background-color: #EEEEEE;
+	border: 1px solid #CCCCCC;
+	font-size: 12px !important;
+	margin-left: 3em;
+	margin-right: 3em;
+	padding: 5px;
+	text-indent: 0;
+}

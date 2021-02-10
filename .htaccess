@@ -1,0 +1,18 @@
+ErrorDocument 404 /404.htm
+ErrorDocument 500 /500.htm
+
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteRule ^img/([0-9]+)(_([0-9]+))(_([cfza]))(_q([0-9]+))?(_([a-z0-9]+)) core/img.php?x=$1&y=$3&m=$5&f=$7&e=$9
+RewriteRule ^index.php?([_/a-z]*)$ index.php?r=$1 [QSA]
+RewriteRule ^css/(.+)$ cache/page_css/$1
+RewriteRule ^js/(.+)$ cache/page_scripts/$1
+
+# questa riga è stata inserita per gestire il refresh forzato dei file js tramite timestamp nel nome del file
+# es. page.1231231231.js
+RewriteRule (.*)\.[0-9]+\.js $1.js [L]
+
+RewriteRule ^pdf/([/a-z]*)(/([0-9]*))?(/([a-z0-9]*))?$ pdf/pdf.php?alias=$1&id=$3&ac=$5 [QSA]
+RewriteRule ^pdf2/([/a-z]*)(/([0-9]*))?(/([a-z0-9]*))?$ pdf/pdf2.php?alias=$1&id=$3&ac=$5 [QSA]
+RewriteRule ^p/([_/a-z]*)(/([0-9]*))?(/([a-z0-9]*))?$ index.php?page=$1&id=$3&ac=$5 [QSA]
