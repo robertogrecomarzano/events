@@ -8,8 +8,10 @@ Creazione di un nuovo Form
 
 4- in evento.class.php aggiungere un "case {folder}" nella funzione registraUtente()
 
-5- modificare la tabella utenti aggiungendo il nuovo modello nella colonna template ed evenutali campi nuovi (user_campo1, user_campo2 ...)
+5- modificare la tabella eventi aggiungendo il nuovo modello nella colonna template ed evenutali campi nuovi nella tabella utenti (user_campo1, user_campo2 ...)
 
 6- modificare pages/admin/eventi/templates/add.tpl inserendo un nuovo radiobutton nei Modelli
 
 7- creare un evento di prova e catturare la schermata per creare un png da inserire nella cartella public (es. {folder}.png)
+
+8- Modificare pages/admin/iscritti/page.php inserirendo il "case {folder}" per l'esportazione in excel e aggiungere gli if relativi ai nuovi campi aggiunti

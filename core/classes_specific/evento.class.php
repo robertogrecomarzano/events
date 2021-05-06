@@ -255,6 +255,40 @@ class Evento extends OrmObj
                     );
                     $result = true;
                     break;
+                case "preadvanced":
+                    $sql = "INSERT INTO utenti SET
+                            id_evento=?,
+                            evento=?,
+                            record_attivo=1,
+                            user_surname=?,
+                            user_name=?,
+                            user_email=?,
+                            user_gender=?,
+                            user_country=?,
+                            user_age=?,
+                            user_organization=?,
+                            user_group=?,
+                            user_group_other=?,
+                            user_sector=?,
+                            user_sector_other=?";
+                    $parameters = [
+                        $evento->id_evento,
+                        $evento->nome,
+                        $surname,
+                        $name,
+                        $email,
+                        $post["user_gender"],
+                        Istat::getDenominazioneNazioneFromCode($post["user_country"]),
+                        $post["user_age"],
+                        trim($post["user_organization"]),
+                        $post["user_group"],
+                        trim($post["user_group_other"]),
+                        $post["user_sector"],
+                        trim($post["user_sector_other"])
+                    ];
+                    $result = true;
+                    break;
+
                 case "advanced":
                     $sql = "INSERT INTO utenti SET
                             id_evento=?,
@@ -313,8 +347,63 @@ class Evento extends OrmObj
                     if (! is_dir($directory))
                         mkdir($directory, 0755, TRUE);
 
-                    $upload = new Upload(null, "call", false, "$email", "user_attachment", "filedesc", "dettaglio", array(
+                    $upload = new Upload(null, $evento->nome, false, "$email", "user_attachment", "filedesc", "dettaglio", array(
                         ".pdf"
+                    ));
+                    $ret = $upload->save();
+
+                    if ($ret) {
+                        $rowsUpload = $upload->getRows("dettaglio='$email' AND record_attivo=1");
+                        if (count($rowsUpload) > 0) {
+                            $row = end($rowsUpload);
+
+                            $sql = "INSERT INTO utenti SET
+                            id_evento=?,
+                            evento=?,
+                            record_attivo=1,
+                            user_surname=?,
+                            user_name=?,
+                            user_email=?,
+                            user_job_position=?,
+                            user_institution=?,
+                            user_country=?,
+                            user_address=?,
+                            user_phone=?,
+                            user_note=?,
+                            user_attachment=?";
+                            $parameters = [
+                                $evento->id_evento,
+                                $evento->nome,
+                                $surname,
+                                $name,
+                                $email,
+                                $post["user_job_position"],
+                                $post["user_institution"],
+                                Istat::getDenominazioneNazioneFromCode($post["user_country"]),
+                                $post["user_address"],
+                                $post["user_phone"],
+                                $post["user_note"],
+                                Config::$urlRoot . "/public/" . $evento->nome . "/" . $row["filename"]
+                            ];
+
+                            $result = true;
+                        }
+                    }
+                    break;
+
+                case "callfull":
+
+                    /**
+                     * Salvataggio eventuale allegato
+                     */
+
+                    $directory = Config::$serverRoot . DS . "public" . DS . "call";
+                    if (! is_dir($directory))
+                        mkdir($directory, 0755, TRUE);
+
+                        $upload = new Upload(null, $evento->nome, false, "$email", "user_attachment", "filedesc", "dettaglio", array(
+                        ".doc",
+                        '.docx'
                     ));
                     $ret = $upload->save();
 
@@ -336,7 +425,10 @@ class Evento extends OrmObj
                             user_country=?,
                             user_address=?,
                             user_phone=?,
-                            user_note=?,
+                            user_title=?,
+                            user_authors=?,
+                            user_session=?,
+                            user_presentation=?,
                             user_attachment=?";
                             $parameters = [
                                 $evento->id_evento,
@@ -350,7 +442,10 @@ class Evento extends OrmObj
                                 Istat::getDenominazioneNazioneFromCode($post["user_country"]),
                                 $post["user_address"],
                                 $post["user_phone"],
-                                $post["user_note"],
+                                $post["user_title"],
+                                $post["user_authors"],
+                                $post["user_session"],
+                                $post["user_presentation"],
                                 Config::$urlRoot . "/public/" . $evento->nome . "/" . $row["filename"]
                             ];
 
@@ -369,7 +464,7 @@ class Evento extends OrmObj
                             user_name=?,
                             user_email=?,
                             user_gender=?,
-                            user_nationality=?,
+                            user_country=?,
                             user_phone=?,
                             user_organization=?,
                             user_organization_acronym=?,
@@ -383,13 +478,37 @@ class Evento extends OrmObj
                         $name,
                         $email,
                         $post["user_gender"],
-                        Istat::getDenominazioneNazioneFromCode($post["user_nationality"]),
+                        Istat::getDenominazioneNazioneFromCode($post["user_country"]),
                         $post["user_phone"],
                         $post["user_organization"],
                         $post["user_organization_acronym"],
                         $post["user_institution"],
                         $post["user_position"]
                     ];
+                    $result = true;
+                    break;
+
+                case "baseinnovazioneit":
+                    $sql = "INSERT INTO utenti SET
+                            id_evento=?,
+                            evento=?,
+                            record_attivo=1,
+                            user_surname=?,
+                            user_name=?,
+                            user_email=?,
+                            user_group=?,
+                            user_group_other=?,
+                            user_business_name=?";
+                    $parameters = array(
+                        $evento->id_evento,
+                        $evento->nome,
+                        $surname,
+                        $name,
+                        $email,
+                        $post["user_group"],
+                        trim($post["user_group_other"]),
+                        trim($post["user_business_name"])
+                    );
                     $result = true;
                     break;
             }

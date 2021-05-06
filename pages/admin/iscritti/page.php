@@ -45,6 +45,14 @@ if ($action == "export") {
                 "Ente di appartenenza"
             ];
             break;
+        case "baseinnovazioneit":
+            $fields = [
+                "Nome",
+                "Email",
+                "Settore",
+                "Ente di appartenenza"
+            ];
+            break;
         case "basic":
             $fields = [
                 "Name",
@@ -61,6 +69,18 @@ if ($action == "export") {
                 "Organization",
                 "Groups",
                 "Hearsay"
+            ];
+            break;
+        case "preadvanced":
+            $fields = [
+                "Name",
+                "Email",
+                "Country",
+                "Organization",
+                "Age",
+                "Gender",
+                "Sectors",
+                "Groups"
             ];
             break;
         case "advanced":
@@ -88,7 +108,6 @@ if ($action == "export") {
         case "call":
             $fields = [
                 "Name",
-                // "Gender",
                 "Country",
                 "Email",
                 "Phone",
@@ -96,6 +115,22 @@ if ($action == "export") {
                 "Job position",
                 "Institution",
                 "Note"
+            ];
+            break;
+        case "callfull":
+            $fields = [
+                "Name",
+                "Gender",
+                "Country",
+                "Email",
+                "Phone",
+                "Address",
+                "Job position",
+                "Institution",
+                "Submission title",
+                "List of authors",
+                "Session",
+                "Type of presentation"
             ];
             break;
         case "expert":
@@ -107,6 +142,7 @@ if ($action == "export") {
                 "Email",
                 "Phone",
                 "Organisation",
+                "Acronym",
                 "Institute/Department",
                 "Position"
             ];
@@ -119,6 +155,8 @@ if ($action == "export") {
 
         if (in_array("Title", $fields))
             $data["Title"] = $iscritto["user_title"];
+        if (in_array("Submission title", $fields))
+            $data["Submission title"] = $iscritto["user_title"];
         if (in_array("Name", $fields))
             $data["Name"] = $iscritto["user_surname"] . " " . $iscritto["user_name"];
         if (in_array("Nome", $fields))
@@ -137,6 +175,10 @@ if ($action == "export") {
             $data["Organization"] = $iscritto["user_organization"];
         if (in_array("Organisation", $fields))
             $data["Organisation"] = $iscritto["user_organization"];
+        if (in_array("Organization", $fields))
+            $data["Organization"] = $iscritto["user_organization"];
+        if (in_array("Acronym", $fields))
+            $data["Acronym"] = $iscritto["user_organization_acronym"];
         if (in_array("Institute/Department", $fields))
             $data["Institute/Department"] = $iscritto["user_institution"];
         if (in_array("Position", $fields))
@@ -152,10 +194,20 @@ if ($action == "export") {
             if (! empty($iscritto["user_group_other"]))
                 $data["Groups"] .= "\r\n" . $iscritto["user_group_other"];
         }
+        if (in_array("Sectors", $fields)) {
+            $data["Sectors"] = str_replace(",", "\r\n", $iscritto["user_sector"]);
+            if (! empty($iscritto["user_sector_other"]))
+                $data["Sectors"] .= "\r\n" . $iscritto["user_sector_other"];
+        }
         if (in_array("Categoria", $fields)) {
             $data["Categoria"] = str_replace(",", "\r\n", $iscritto["user_group"]);
             if (! empty($iscritto["user_group_other"]))
                 $data["Categoria"] .= "\r\n" . $iscritto["user_group_other"];
+        }
+        if (in_array("Settore", $fields)) {
+            $data["Settore"] = str_replace(",", "\r\n", $iscritto["user_group"]);
+            if (! empty($iscritto["user_group_other"]))
+                $data["Settore"] .= "\r\n" . $iscritto["user_group_other"];
         }
         if (in_array("Business name", $fields))
             $data["Business name"] = $iscritto["user_business_name"];
@@ -188,6 +240,12 @@ if ($action == "export") {
             $data["Institution"] = $iscritto["user_institution"];
         if (in_array("Note", $fields))
             $data["Note"] = $iscritto["user_note"];
+        if (in_array("List of authors", $fields))
+            $data["List of authors"] = $iscritto["user_authors"];
+        if (in_array("Session", $fields))
+            $data["Session"] = $iscritto["user_session"];
+        if (in_array("Type of presentation", $fields))
+            $data["Type of presentation"] = $iscritto["user_presentation"];
 
         if (! empty($iscritto["user_attachment"]) && file_exists(Config::$serverRoot . DS . "public" . DS . $iscritto["evento"] . DS . $iscritto["id_utente"] . DS . $iscritto["user_attachment"]))
             $data["Attachment"] = $iscritto["user_attachment"];
@@ -195,10 +253,11 @@ if ($action == "export") {
         $record[] = $data;
     }
 
-    foreach ($record[0] as $k => $v) {
-        if (in_array($k, $fields))
-            $header[$k] = "string";
-    }
+    foreach ($fields as $field)
+        foreach ($record[0] as $k => $v) {
+            if ($k == $field)
+                $header[$k] = "string";
+        }
 
     $path = Config::$publicRoot;
     $writer = new XLSXWriter();
@@ -214,12 +273,15 @@ if ($action == "export") {
         'border' => 'left,right,top,bottom'
     ));
 
-    foreach ($record as $row)
-        $writer->writeSheetRow($foglio, $row, [
+    foreach ($record as $row) {
+        $riga = [];
+        foreach ($fields as $field)
+            $riga[$field] = $row[$field];
+        $writer->writeSheetRow($foglio, $riga, [
             'wrap_text' => true,
             'valign' => 'center'
         ]);
-
+    }
     $filename = "users.xlsx";
     $writer->writeToFile($path . DS . $filename);
 

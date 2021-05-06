@@ -19,11 +19,14 @@
 		<label class="control-label col-md-6 col-sm-6 col-xs-12">Modello<span class="help-block">modello di form da usare</span></label>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			{form_radio iname='template' writable=$isWritable value='basicit' label="<a rel='popover' data-img='{$siteUrl}/public/basicit.png'>Base (it)</a>"}
+			{form_radio iname='template' writable=$isWritable value='baseinnovazioneit' label="<a rel='popover' data-img='{$siteUrl}/public/baseinnovazioneit.png'>Base Innovazione (it)</a>"}
 			{form_radio iname='template' writable=$isWritable value='basic' label="<a rel='popover' data-img='{$siteUrl}/public/basic.png'>Base (en)</a>"}
 			{form_radio iname='template' writable=$isWritable value='intermediate' label="<a rel='popover' data-img='{$siteUrl}/public/intermediate.png'>Intermedio (en)</a>"}
+			{form_radio iname='template' writable=$isWritable value='preadvanced' label="<a rel='popover' data-img='{$siteUrl}/public/preadvanced.png'>Pre-Avanzato (en)</a>"}
 			{form_radio iname='template' writable=$isWritable value='advanced' label="<a rel='popover' data-img='{$siteUrl}/public/advanced.png'>Avanzato (en)</a>"}
 			{form_radio iname='template' writable=$isWritable value='international' label="<a rel='popover' data-img='{$siteUrl}/public/international.png'>International (en)</a>"}
 			{form_radio iname='template' writable=$isWritable value='call' label="<a rel='popover' data-img='{$siteUrl}/public/call.png'>Call (en)</a>"}
+			{form_radio iname='template' writable=$isWritable value='callfull' label="<a rel='popover' data-img='{$siteUrl}/public/callfull.png'>Call Full (en)</a>"}
 			{form_radio iname='template' writable=$isWritable value='expert' label="<a rel='popover' data-img='{$siteUrl}/public/expert.png'>Expert (en)</a>"}
 		</div>
 	</div>
