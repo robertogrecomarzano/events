@@ -2,12 +2,12 @@
 <p>
 {if $params.event.lingua == "en_US"}
 	Dear participant,<br />
-	thank you for having registered in the "<b>{$params.event.titolo}</b>" programmed for {$params.event.data_extended} from {$params.event.ora_inizio} to {$params.event.ora_fine} CET.<br />
+	thank you for having registered in the "<b>{$params.event.titolo}</b>".<br />
 	You will receive soon further information on how to participate to the event.<br />
 {if !empty($params.event.contact)}In case of any technical difficulties on accessing please contact {$params.event.contact} at <a style='color: #00589A; text-decoration: none;' href="mail=to:{$params.event.email}">{$params.event.email}</a><br />{/if}
 {else}
 	Gentile partecipante,<br />
-	grazie per esserti iscritto all'evento "<b>{$params.event.titolo}</b>" in programma il {$params.event.data_extended} dalle ore {$params.event.ora_inizio} alle ore {$params.event.ora_fine} CET.<br />
+	grazie per esserti iscritto all'evento "<b>{$params.event.titolo}</b>".<br />
 	Riceverai presto ulteriori informazioni su come partecipare all'evento.<br />
 {if !empty($params.event.contact)}In caso di difficoltà tecniche, contattare {$params.event.contact} a <a style='color: #00589A; text-decoration: none;' href="mail=to:{$params.event.email}">{$params.event.email}</a><br />{/if}
 {/if}

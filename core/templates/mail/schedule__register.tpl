@@ -2,7 +2,7 @@
 {if $params.event.lingua == "en_US"}
 	{if empty($params.event.message)}
 		Dear participant,<br />
-		thank you for having registered in the "<b>{$params.event.titolo}</b>" programmed for {$params.event.data_extended} from {$params.event.ora_inizio} to {$params.event.ora_fine} CET.<br />
+		thank you for having registered in the "<b>{$params.event.titolo}</b>".<br />
 		You will receive soon further information on how to participate to the event.<br />
 	{else}
 		{$params.event.message}
@@ -11,7 +11,7 @@
 {else}
 	{if empty($params.event.message)}
 		Gentile partecipante,<br />
-		grazie per esserti iscritto all'evento "<b>{$params.event.titolo}</b>" in programma il {$params.event.data_extended} dalle ore {$params.event.ora_inizio} alle ore {$params.event.ora_fine} CET.<br />
+		grazie per esserti iscritto all'evento "<b>{$params.event.titolo}</b>".<br />
 		Riceverai presto ulteriori informazioni su come partecipare all'evento.<br />
 	{else}
 		{$params.event.message}

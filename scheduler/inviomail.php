@@ -1,7 +1,10 @@
 <?php
 error_reporting(E_ALL & ~ E_DEPRECATED & ~ E_WARNING & ~ E_NOTICE);
-include "/var/www/vhosts/h632659.linp066.arubabusiness.it/events.iamb.it/config.php";
-include "/var/www/vhosts/h632659.linp066.arubabusiness.it/events.iamb.it/core/framework.php";
+// include "/var/www/vhosts/h632659.linp066.arubabusiness.it/events.iamb.it/config.php";
+// include "/var/www/vhosts/h632659.linp066.arubabusiness.it/events.iamb.it/core/framework.php";
+
+include "../config.php";
+include "../core/framework.php";
 $tmp_dir = Config::$serverRoot . DS . "tmp";
 if (! file_exists($tmp_dir))
     mkdir($tmp_dir, 077, true);
@@ -18,11 +21,35 @@ if ($is_occupato)
 else {
 
     $objEvento = new Evento();
-    $events = Database::getRows("SELECT e.*, DATE_FORMAT(DATA,'%d/%m/%Y') AS data_dmy FROM eventi e JOIN utenti u USING(id_utente) WHERE inviare=1 AND e.record_attivo=1");
+    $events = Database::getRows("SELECT *, 
+                                   DATE_FORMAT(s.data,'%d/%m/%Y') AS data_dmy,
+                                   e.data_inizio, e.data_fine,
+                                   e.titolo AS titolo,
+                                   e.lingua
+                                   FROM eventi_sessioni s
+                                   JOIN eventi e USING(id_evento)
+                                   WHERE s.inviare=1 AND e.record_attivo=1 AND s.record_attivo=1
+                                   GROUP BY s.id_sessione");
 
     foreach ($events as &$event) {
 
         $event["logo"] = Config::$urlRoot . "/" . "public" . "/" . $event["id_evento"] . "/" . $event["logo"];
+
+        if (Config::$defaultLocale != $event["lingua"])
+            setlocale(LC_TIME, $event["lingua"]);
+
+        /*
+         * switch ($event["modalita"]) {
+         * case "singola":
+         * $event["data_extended"] = strftime("%e %B %Y", strtotime($event["data_inizio"]));
+         * if ($event["data_inizio"] != $event["data_fine"])
+         * $event["data_extended"] .= " - " . strftime("%e %B %Y", strtotime($event["data_fine"]));
+         * break;
+         * case "multipla":
+         * $event["data_extended"] = strftime("%e %B %Y", strtotime($event["data"]));
+         * break;
+         * }
+         */
 
         Config::$config["email"] = $event["email"];
 
@@ -30,11 +57,8 @@ else {
         $subject = ! empty($event["subject"]) ? $event["subject"] : $event["titolo"];
         $flag = "is_" . $template . "_inviato";
 
-        $objUser = new User();
-        $users = $objUser->all([
-            "record_attivo" => 1,
-            "$flag" => 0,
-            "id_evento" => $event["id_evento"]
+        $users = Database::getRows("SELECT * FROM eventi_sessioni_utenti s JOIN utenti USING(id_utente) WHERE id_sessione=? AND $flag=0", [
+            $event["id_sessione"]
         ]);
 
         $i = 0;
@@ -43,24 +67,28 @@ else {
         $n = count($users);
 
         if ($template == "link")
-            Database::query("UPDATE eventi SET send_zoom_link_on_register=1 WHERE id_evento=?", [
-                $event["id_evento"]
+            Database::query("UPDATE eventi_sessioni SET zoom_send_link_on_register=1 WHERE id_sessione=?", [
+                $event["id_sessione"]
             ]);
 
         foreach ($users as $user) {
 
-            $msg = new Message("schedule__$template", null, $subject, $user->user_surname . " " . $user->user_name, $user->user_email, [
+            $msg = new Message("schedule__$template", null, $subject, $user["user_surname"] . " " . $user["user_name"], $user["user_email"], [
                 "event" => $event
             ], null, [
                 Config::$publicRoot . DS . "tutorial_zoom.pdf"
             ]);
             $ret = $msg->render();
 
-            if ($ret["SUCCESS"])
-                $objUser->update($user->id_utente, [
-                    "$flag" => 1,
-                    "ts_" . $template . "_inviato" => date("Y-m-d H:i:s")
+            if ($ret["SUCCESS"]) {
+
+                $field = "ts_" . $template . "_inviato";
+                Database::query("UPDATE eventi_sessioni_utenti SET $flag=1, $field=? WHERE id_sessione=? AND id_utente=?", [
+                    date("Y-m-d H:i:s"),
+                    $user["id_sessione"],
+                    $user["id_utente"]
                 ]);
+            }
 
             $i ++;
             $perc = round(($i / $n) * 100, 2);
@@ -73,7 +101,7 @@ else {
                 $perc
             ));
 
-            file_put_contents("mail_evento_" . $event["id_evento"] . ".log", $user->id_utente . ", " . $user->user_email . PHP_EOL, FILE_APPEND | LOCK_EX);
+            file_put_contents("mail_evento_" . $event["id_sessione"] . ".log", $user["id_utente"] . ", " . $user["user_email"] . PHP_EOL, FILE_APPEND | LOCK_EX);
             sleep(1);
         }
 
@@ -84,9 +112,8 @@ else {
         ]);
         $ret = $msg->render();
 
-        $objEvento->update($event["id_evento"], [
-            "inviare" => 0,
-            "inviare_template" => null
+        Database::query("UPDATE eventi_sessioni SET inviare=0, inviare_template=NULL WHERE id_sessione=?", [
+            $event["id_sessione"]
         ]);
 
         Database::query("UPDATE exec_progress SET is_occupato=0, progress=0, timestamp=NOW()", [

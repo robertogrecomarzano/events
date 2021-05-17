@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{$title}</title>
-
+{$css}
 <!-- Bootstrap Core CSS -->
 <link
 	href="{$siteUrl}/core/templates/vendor/bootstrap/css/bootstrap.min.css"
@@ -261,14 +261,7 @@
 	<script type="text/javascript"
 		src="{$siteUrl}/core/templates/vendor/datatables/datatables.min.js"></script>
 
-	<!-- pdf make -->
-	<script type="text/javascript"
-		src="{$siteUrl}/core/templates/vendor/pdfmake/pdfmake.min.js"></script>
-	<script type="text/javascript"
-		src="{$siteUrl}/core/templates/vendor/pdfmake/vfs_fonts.js"></script>
-
-
-
+	
 
 	<!-- Custom Theme JavaScript -->
 	<script src="{$siteUrl}/core/templates/js/template-script.js"></script>
@@ -292,16 +285,10 @@
 	<script
 		src="{$siteUrl}/core/templates/vendor/summernote/summernote-cleaner.js"></script>
 		
-	{$css}{$js}
+	{$js}
 
-	<!-- bootstrap Toggle to convert checkboxes into toggles -->
-	<link
-		href="{$siteUrl}/core/templates/vendor/bootstrap-toggle/bootstrap-toggle.min.css"
-		rel="stylesheet">
-	<script
-		src="{$siteUrl}/core/templates/vendor/bootstrap-toggle/bootstrap-toggle.min.js"></script>
-
-
+	
+	
 	<div id='loading' onclick="$(this).hide();" class="modal fade in"
 		tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
 		data-backdrop="static" data-keyboard="false"

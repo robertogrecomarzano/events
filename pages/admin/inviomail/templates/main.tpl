@@ -14,14 +14,16 @@
 	class="table table-striped able-hover no-footer dtr-inline">
 	<thead>
 		<tr>
-			<th>Titolo / Oggetto della mail</th>
+			<th>Evento</th>
+			<th>Sessione</th>
 			<th>Inviare reminder o link</th>
 		</tr>
 		</thead>
-	{foreach from=$eventi item=event}
+	{foreach from=$sessioni item=sessione}
 		<tr>	
-			<td><b>{$event.titolo}</b></td>
-			<th>{form_radios iname="event[{$event.id_evento}]" src=$emails inline=true}</th>
+			<td><b>{$sessione.titolo_evento}</b></td>
+			<td><b>{$sessione.titolo}</b></td>
+			<th>{form_radios iname="sessione[{$sessione.id_sessione}]" src=$emails inline=true}</th>
 		</tr>
 	{/foreach}
 	</table>

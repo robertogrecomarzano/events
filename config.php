@@ -152,7 +152,8 @@ class Config
         "logout",
         "notauth",
         "offline",
-        "notfound"
+        "notfound",
+        "expirated"
         
         
     );

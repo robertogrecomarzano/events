@@ -40,6 +40,7 @@ if ($action == "export") {
         case "basicit":
             $fields = [
                 "Nome",
+                "Cognome",
                 "Email",
                 "Categoria",
                 "Ente di appartenenza"
@@ -48,6 +49,7 @@ if ($action == "export") {
         case "baseinnovazioneit":
             $fields = [
                 "Nome",
+                "Cognome",
                 "Email",
                 "Settore",
                 "Ente di appartenenza"
@@ -56,6 +58,7 @@ if ($action == "export") {
         case "basic":
             $fields = [
                 "Name",
+                "Surname",
                 "Email",
                 "Groups",
                 "Business name"
@@ -64,6 +67,7 @@ if ($action == "export") {
         case "intermediate":
             $fields = [
                 "Name",
+                "Surname",
                 "Email",
                 "Country",
                 "Organization",
@@ -74,6 +78,7 @@ if ($action == "export") {
         case "preadvanced":
             $fields = [
                 "Name",
+                "Surname",
                 "Email",
                 "Country",
                 "Organization",
@@ -86,6 +91,7 @@ if ($action == "export") {
         case "advanced":
             $fields = [
                 "Name",
+                "Surname",
                 "Gender",
                 "Nationality",
                 "Age",
@@ -99,6 +105,7 @@ if ($action == "export") {
         case "international":
             $fields = [
                 "Name",
+                "Surname",
                 "Email",
                 "Groups",
                 "Organization",
@@ -108,6 +115,7 @@ if ($action == "export") {
         case "call":
             $fields = [
                 "Name",
+                "Surname",
                 "Country",
                 "Email",
                 "Phone",
@@ -120,6 +128,7 @@ if ($action == "export") {
         case "callfull":
             $fields = [
                 "Name",
+                "Surname",
                 "Gender",
                 "Country",
                 "Email",
@@ -137,6 +146,7 @@ if ($action == "export") {
             $fields = [
                 "Title",
                 "Name",
+                "Surname",
                 "Gender",
                 "Country",
                 "Email",
@@ -147,7 +157,22 @@ if ($action == "export") {
                 "Position"
             ];
             break;
+        case "experttwo":
+            $fields = [
+                "Title",
+                "Name",
+                "Surname",
+                "Gender",
+                "Country",
+                "Email",
+                "Organisation",
+                "Position",
+                "Category"
+            ];
+            break;
     }
+
+    $sessions = $objEvento->getSessioni($_POST["evento"]);
 
     $record = [];
     foreach ($iscritti as $iscritto) {
@@ -158,9 +183,13 @@ if ($action == "export") {
         if (in_array("Submission title", $fields))
             $data["Submission title"] = $iscritto["user_title"];
         if (in_array("Name", $fields))
-            $data["Name"] = $iscritto["user_surname"] . " " . $iscritto["user_name"];
+            $data["Name"] = $iscritto["user_name"];
+        if (in_array("Surname", $fields))
+            $data["Surname"] = $iscritto["user_surname"];
         if (in_array("Nome", $fields))
-            $data["Nome"] = $iscritto["user_surname"] . " " . $iscritto["user_name"];
+            $data["Nome"] = $iscritto["user_name"];
+        if (in_array("Cognome", $fields))
+            $data["Cognome"] = $iscritto["user_surname"];
         if (in_array("Email", $fields))
             $data["Email"] = $iscritto["user_email"];
         if (in_array("Gender", $fields))
@@ -193,6 +222,11 @@ if ($action == "export") {
             $data["Groups"] = str_replace(",", "\r\n", $iscritto["user_group"]);
             if (! empty($iscritto["user_group_other"]))
                 $data["Groups"] .= "\r\n" . $iscritto["user_group_other"];
+        }
+        if (in_array("Category", $fields)) {
+            $data["Category"] = str_replace(",", "\r\n", $iscritto["user_group"]);
+            if (! empty($iscritto["user_group_other"]))
+                $data["Category"] .= "\r\n" . $iscritto["user_group_other"];
         }
         if (in_array("Sectors", $fields)) {
             $data["Sectors"] = str_replace(",", "\r\n", $iscritto["user_sector"]);
@@ -249,6 +283,23 @@ if ($action == "export") {
 
         if (! empty($iscritto["user_attachment"]) && file_exists(Config::$serverRoot . DS . "public" . DS . $iscritto["evento"] . DS . $iscritto["id_utente"] . DS . $iscritto["user_attachment"]))
             $data["Attachment"] = $iscritto["user_attachment"];
+
+        if ($objEvento->orm_record->modalita == "multipla" && count($sessions) > 1) {
+
+            $i = 1;
+            foreach ($sessions as $session) {
+                $fields[] = "Session $i";
+                $data["Session $i"] = "";
+                $tot = Database::getCount("eventi_sessioni_utenti", "id_utente=? AND id_sessione=?", [
+                    $iscritto["id_utente"],
+                    $session["id_sessione"]
+                ]);
+
+                if ($tot > 0)
+                    $data["Session $i"] = $session["titolo"] . " :: " . CustomDate::format($session["data"], "Y-m-d", "d/m/Y") . " " . $session["ora_inizio"] . "-" . $session["ora_fine"];
+                $i ++;
+            }
+        }
 
         $record[] = $data;
     }

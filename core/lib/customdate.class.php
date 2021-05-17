@@ -118,16 +118,22 @@ class CustomDate
      * @param string $format1
      * @param string $data2
      * @param string $format2
+     * @param string $compare
      * @return boolean
      */
-    static function isPrecedente($datetime1, $format1, $datetime2, $format2)
+    static function isPrecedente($datetime1, $format1, $datetime2, $format2, $compare = "<")
     {
         if (empty($datetime1) || empty($datetime2) || $datetime1 == "0000-00-00" || $datetime2 == "0000-00-00")
             return 0;
         $data1 = date_create_from_format($format1, $datetime1);
         $data2 = date_create_from_format($format2, $datetime2);
-        
-        return $data1 <= $data2;
+
+        switch ($compare) {
+            case "<":
+                return $data1 < $data2;
+            default:
+                return $data1 <= $data2;
+        }
     }
 
     /**
@@ -146,10 +152,10 @@ class CustomDate
     {
         if (empty($data) || empty($datetime1) || empty($datetime2) || $data == "0000-00-00" || $datetime1 == "0000-00-00" || $datetime2 == "0000-00-00")
             return false;
-        
-        $check1 = self::isPrecedente($data, $format, $datetime2, $format2);
-        $check2 = self::isPrecedente($datetime1, $format1, $data, $format);
-        
+
+        $check1 = self::isPrecedente($data, $format, $datetime2, $format2, "<=");
+        $check2 = self::isPrecedente($datetime1, $format1, $data, $format, "<=");
+
         return $check1 && $check2;
     }
 

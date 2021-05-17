@@ -39,6 +39,9 @@ form {
 			<div class="col-sm-12 col-md-12">
 				<div class="logo-title-container logo-title-container">
 					{form_opening class="col-lg-8 col-md-offset-2" enctype="multipart/form-data"}
+						{if !$writable.writable}
+							<div class="alert alert-danger text-center lead"><h3>{$writable.message}</h3></div>
+						{/if}
 						<div class="row">
 						<div class="col-lg-8 col-xs-12">
 						{if !empty($evento->logo) && $evento->show_logo}
@@ -54,12 +57,25 @@ form {
 						<div class="clearfix row form-horizontal">
 							<h2 class="text text-center text-primary lead" style="margin-bottom:5px;">{$evento->titolo}</h2>
 							<div class="text-center" style="font-size:16px; margin-bottom:10px;">{$evento->descrizione}</div>
-							{if $evento->template!="call"}<h3 class="text-center">{$evento->data_extended} {$evento->ora_inizio} - {$evento->ora_fine}</h3>{/if}
+							{if $evento->template!="call"}<h3 class="text-center">{$evento->data_extended} {if !empty($evento->ora_inizio)}<small>({$evento->ora_inizio} - {$evento->ora_fine})</small>{/if}</h3>{/if}
 							<div class="text-center" style="margin-bottom:10px;">
 								{if !empty($evento->email)}<label class="block"><i class="fas fa-envelope text-info">&nbsp;</i><a href="mailto:{$email}">{$evento->email}</a></label>{/if}
 								{if !empty($evento->website)}<label class="block"><i class="fas fa-globe text-info">&nbsp;</i><a target="_blank" href="{$evento->website}">{$evento->website}</a></label> {/if}
 							</div>
+							
 							{include file="./signup_$signupContent.tpl"}
+							
+							{if $sessions|count>1}
+								<div class="form-group">
+									<label class="control-label required">Session</label>
+									<div>
+										{foreach from=$sessions item=session}
+											{form_check iname="sessions[{$session.id_sessione}]" label=$session.label writable=$session.isEnabled value=$session.id_sessione}
+										{/foreach}
+									</div>
+								</div>	
+							{/if}
+							
 							<div class="form-group">
 								<label class="control-label col-md-6 col-sm-6 col-xs-12 required">Captcha code</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">{$captcha}</div>
@@ -69,7 +85,7 @@ form {
 							</div>
 							<div class="clearfix"></div>
 							<div class="text-center">
-					 			{form_button name="signup" img="save" text=true value="CONFIRM REGISTRATION" onclick='return form_signup_check(this);' class='btn btn-success btn-block'}
+					 			{form_button name="signup" img="save" text=true value="CONFIRM REGISTRATION" onclick='return form_signup_check(this);' class='btn btn-success btn-block' writable=$writable.writable}
 							</div>
 						</div>
 					{form_closing}

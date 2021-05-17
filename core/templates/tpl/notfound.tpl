@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Lato:100"
 	rel="stylesheet" type="text/css">
 </head>
-<title>{form_lang value="PAGE_NOT_FOUND"}</title>
+<title>Event not found</title>
 <body>
 
 	<div class="site-wrapper">
@@ -22,8 +22,7 @@
 			<div class="cover-container">
 
 				<div class="inner cover">
-					<div class="title">{$title}</div>
-					<h1 class="cover-heading">{form_lang value="PAGE_NOT_FOUND"}</h1>
+					<div class="title">Event not found</div>
 					<p class="lead">
 						<a href="{$siteUrl}" class="btn btn-lg btn-default">Home</a>
 					</p>

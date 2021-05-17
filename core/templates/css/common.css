@@ -233,9 +233,6 @@ form {
 	display: inline-block;
 }
 
-.dropdown-menu {
-	min-width: 260px;
-}
 
 .navbar-top-links .dropdown-menu li {
 	display: block;

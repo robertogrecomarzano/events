@@ -11,6 +11,12 @@ function form_signup_check(obj) {
 		captcha_value : "Captcha code"
 	})) {
 
+		if ($("input[type='checkbox'][name^=sessions]").length > 0)
+			if ($("input[type='checkbox'][name^=sessions]").filter(':checked').length == 0) {
+				bootbox.alert("Please, select at least one session");
+				return false;
+			}
+		
 		var privacy_not_check = 0;
 
 		$('input:checkbox[required=required]').each(function(item) {

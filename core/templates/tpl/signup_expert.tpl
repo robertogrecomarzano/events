@@ -12,7 +12,7 @@
 </div>
 <div class="form-group">
 	<label class="control-label col-md-6 col-sm-6 col-xs-12">Gender</label>
-	<div class="col-md-6 col-sm-6 col-xs-12">{form_radios iname='user_gender' src=['m'=>"Male",'f'=>"Female"] inline=true tabindex='4'}</div>
+	<div class="col-md-6 col-sm-6 col-xs-12">{form_radios iname='user_gender' src=['Male'=>"Male",'Female'=>"Female"] inline=true tabindex='4'}</div>
 </div>
 <div class="form-group">
 	<label class="control-label col-md-6 col-sm-6 col-xs-12 required">Country</label>

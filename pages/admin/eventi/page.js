@@ -2,6 +2,66 @@ $(document)
 		.ready(
 				function() {
 
+					$('body').on('focus', ".input-group.date", function() {
+						$(this).datepicker({
+							calendarWeeks : true,
+							format : 'dd/mm/yyyy',
+							autoclose : true,
+							todayHighlight : true,
+							language : "it"
+						});
+					});
+
+					showHideSessions();
+
+					var app = angular.module('app', []);
+
+					app.config([ '$interpolateProvider',
+							function($interpolateProvider) {
+								$interpolateProvider.startSymbol('((');
+								$interpolateProvider.endSymbol('))');
+							} ]);
+
+					var rowsSessioni = [ [] ];
+
+					app.controller("myPanelSessioni", function($scope) {
+
+						$scope.addItem = function() {
+							var c = $scope.data.length + 1;
+							var item = new String('Item ' + c)
+							$scope.data.splice(0, 0, item);
+						};
+
+						this.panelrows = rowsSessioni;
+
+						this.counter = 1;
+
+						this.getRows = function() {
+							return this.panelrows;
+						};
+
+						this.removeRow = function(index) {
+
+							this.panelrows.splice(index, 1);
+							if (this.panelrows.length == 0)
+								$("#divZoom").show();
+						};
+
+						this.addrow = function() {
+							if (!$("#divListSessioni").is(":visible"))
+								$("#divListSessioni").show();
+							else
+								this.panelrows.push(this.counter++);
+
+							$("#divZoom").hide();
+						};
+
+					});
+
+					$('#modalita').on("change", function() {
+						showHideSessions();
+					});
+
 					$('#nome').keyup(function() {
 						this.value = this.value.toLocaleLowerCase();
 					});
@@ -63,8 +123,15 @@ $(document)
 							.summernote(
 									{
 										toolbar : [
-												['style',[ 'bold', 'italic','underline','clear' ]],
-												['para', ['ul', 'ol', 'paragraph']],
+												[
+														'style',
+														[ 'bold', 'italic',
+																'underline',
+																'clear' ] ],
+												[
+														'para',
+														[ 'ul', 'ol',
+																'paragraph' ] ],
 												[ 'insert', [ 'link' ] ], ],
 
 										dialogsInBody : true,
@@ -104,6 +171,10 @@ $(document)
 
 				});
 
+function deleteRow(id) {
+	$("#" + id).remove();
+}
+
 function form_insert(obj) {
 
 	if (checkRequired({
@@ -111,7 +182,8 @@ function form_insert(obj) {
 		titolo : "Indicare il titolo",
 		nome : "Indicare il nome",
 		"*$('input[name^=template]:checked').length > 0" : "Selezionare un modello",
-		data : "Indicare la data dell'evento"
+		data_inizio : "Indicare la data di inizio dell'evento",
+		data_fine : "Indicare la data di fine dell'evento"
 	}))
 		bootbox.confirm({
 			title : "Registrazione evento",
@@ -133,14 +205,31 @@ function form_insert(obj) {
 
 					switch (action) {
 					case "add":
+					case "add2":
 						return form_add2(obj);
 						break;
 					case "mod":
+					case "mod2":
 						return form_mod2(obj, action_id);
 						break;
 					}
 				}
 			}
 		});
+
+}
+
+function showHideSessions() {
+	var modalita = $("#modalita").val();
+
+	if (modalita == 'multipla') {
+		$("#divZoom").hide();
+		$("#btnAddSession").show();
+		$("#divOrarioEvento").hide();
+	} else {
+		$("#divZoom").show();
+		$("#btnAddSession").hide();
+		$("#divOrarioEvento").show();
+	}
 
 }

@@ -10,6 +10,12 @@ function form_signup_check(obj) {
 		captcha_value : "Captcha code"
 	})) {
 
+		if ($("input[type='checkbox'][name^=sessions]").length > 0)
+			if ($("input[type='checkbox'][name^=sessions]").filter(':checked').length == 0) {
+				bootbox.alert("Please, select at least one session");
+				return false;
+			}
+		
 		var privacy_not_check = 0;
 
 		$('input:checkbox[required=required]').each(function(item) {
@@ -29,4 +35,13 @@ function form_signup_check(obj) {
 	}
 
 	return false;
+}
+
+
+function showHideOtherGroup(obj) {
+
+	if ($(obj).prop("checked"))
+		$("#user_group_other_details").show(500);
+	else
+		$("#user_group_other_details").hide(200);
 }
